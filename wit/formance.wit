@@ -1,8 +1,4 @@
-interface formance-handler {
-    use types.{update-iv-request, update-iv-response, trade-error, active-positions-request, trade-list-response};  
-    update-iv: func (request: update-iv-request) -> result<update-iv-response, trade-error>;
-    active-positions: func (request: active-positions-request) -> result<trade-list-response, trade-error>;
-    
-    use types.{get-balance-request, get-balance-response}
-    get-balance: func(request: get-balance-request) -> result<get-balance-response>;
+interface formance-handler {    
+    use types.{get-balance-request, get-balance-response, error}
+    get-balance: func(request: get-balance-request) -> result<get-balance-response, error>;
   }

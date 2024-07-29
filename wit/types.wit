@@ -1,143 +1,37 @@
 interface types {
-    use jabratech:common/types.{pair, currency, option-kind, side, option-type, payout-ccy, instrument-kind, counterparty, user};
-  
+    //use jabratech:common/types.{pair, currency, option-kind, side, option-type, payout-ccy, instrument-kind, counterparty, user};
+
     /** 
      * Record representing an error result
      * - error-code: an error code for validation
-     * - errors: list of description of errors
+     * - error-msg: description of error
      */
-    record trade-error {
+    record error {
       error-code: s16,
-      errors: list<string>
+      error-msg: string
     }
-  
-    /** 
-     * Record representing a response during iv update-iv-request
-     * - code: response code for validation
-     * - message: description of the response
-     * - data: list group-ids that are updated
-     */
-    record update-iv-response {
-      code: s16,
-      message: string,
-      data: list<string>
+
+    record get-balance-request {
+      data: list<get-balance-request-data>
     }
-  
-    /**
-     * Record representing a request to update iv
-     * - user-email: email of the user
-     * - group-ids: list of group-ids to update iv
-     */
-    record update-iv-request {
-      user-email: string,
-      group-ids: list<string>
+
+    record get-balance-response {
+      data: list<get-balance-response-data>
     }
-  
-    /**
-     * Record representing a request to get trade list
-     * - code: response code for validation
-     * - message: description of the response
-     * - data: list of trades
-     */
-    record trade-list-response {
-      code: s16,
-      message: string,
-      data: list<trade>
+
+    record get-balance-request-data {
+      counterparty: string,
+      sub-ledger: string
     }
-  
-    /**
-     * Record representing a request to get active positions
-     * - user-email: email of the user
-     * - pairs: list of pairs, if the value is None, it will return all active positions on all pairs
-     * - counterparties: list of counterparties, if the value is None, it will return all active positions
-     */
-    record active-positions-request {
-      user-email: string,
-      pairs: option<list<pair>>,
-      counterparties: option<list<s8>>
+
+    record get-balance-response-data {
+      counterparty: string,
+      sub-ledger: string,
+      balances: list<balances>
     }
-    record trade {
-      id: s64,
-      date-created: string,
-      date-updated: option<string>,
-      venue-instrument-name: string,
-      venue-order-id: string,
-      venue-trade-id: string,
-      amount: f64,
-      price: f64,
-      instrument-name: string,
-      instrument-kind: instrument-kind,
-      strike: f64,
-      index-price: f64,
-      iv: f64,
-      expiry-timestamp: string,
-      fee-amount: option<f64>,
-      option-kind: option-kind,
-      side: side,
-      interest-rate: f64,
-      group-id: string,
-      px-in-base-ccy: f64,
-      px-in-quote-ccy: f64,
-      spot: f64,
-      has-termsheet: bool,
-      is-submitted: bool,
-      payout-ccy: payout-ccy,
-      option-type: option-type,
-      trade-status: trade-status,
-      has-instrument: bool,
-      trade-type: trade-type,
-      pnl: option<f64>,
-      pnl-ccy: option<string>,
-      activity: trade-activity,
-      pnl-ccy-ticker: option<string>,
-      payout-ccy-ticker: option<string>,
-      r1: option<f64>,
-      r2: f64,
-      ttm: f64,
-      user-created: user,
-      counterparty-id: counterparty,
-      pair-id: pair,
-      base-currency-id: currency,
-      quote-currency-id: currency,
-      fee-currency-id: option<currency>,
-      party-a: counterparty,
-      party-b: counterparty,
-      ccy-id: currency
-    }
-  
-    /**
-     * Enum representing the status of a trade
-     * - open: trade is open
-     * - expired: trade has expired
-     * - exercised: trade has been exercised
-     * - closed: trade is closed
-     */
-    enum trade-status {
-      open,
-      expired,
-      exercised,
-      closed
-    }
-  
-    /**
-     * Enum representing the type of a trade
-     * - trade: initial trade
-     * - settlement: the trade is for settlement
-     * - delivery: the trade is for delivery
-     */
-    enum trade-type {
-      trade,
-      settlement,
-      delivery
-    }
-    
-    /**
-     * Enum representing the trade activity
-     * - open: trade is on open activity
-     * - close: the trade is on close activity
-     */
-    enum trade-activity {
-      open,
-      close
-    }
-  }
+
+    record balances {
+      currency: string,
+      amount: f64
+    }    
+}
